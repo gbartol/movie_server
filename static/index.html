@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Filmovi</title>
+</head>
+<body>
+    <h1>Filmovi</h1>
+
+    <p class="clip-text"></p>
+
+    <script>
+
+        document.addEventListener( 'DOMContentLoaded', async function() {
+
+            movies = [];
+            movies = await get_movies_list();
+
+            for(let movie of movies) {
+                let movie_html = document.createElement('a');
+                movie_html.textContent = movie.title;
+                movie_html.href = 
+                    `/movie?title=${encodeURIComponent(movie.title)}` +
+                    `&folder=${encodeURIComponent(movie.folder)}` +
+                    `&file=${encodeURIComponent(movie.file)}`;
+                movie_html.style.display = 'block';
+
+                document.body.append(movie_html);
+            }
+        });
+
+        async function get_movies_list() {
+            let resp = await fetch('/get_movies_list');
+
+            let data = await resp.json();
+            return data;
+        }
+
+    </script>
+</body>
+</html>
